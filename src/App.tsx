@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-
+import { PlusCircle, Trash2, CheckCircle, Circle } from 'lucide-react';
 type Category = 'personal' | 'work' | 'shopping' | 'other';
 
 interface Task {
@@ -44,9 +44,9 @@ function App() {
   };
   
   // delete task from tasks
-  // const deleteTask = (id: number) => {
-  //   setTasks(tasks.filter((task) => task.id !== id));
-  // };
+  const deleteTask = (id: number) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
 
   return (
     <>
@@ -81,14 +81,14 @@ function App() {
           <div className="flex gap-4">
             <input
               type="text"
-              // value={newTask}
-              // onChange={(e) => setNewTask(e.target.value)}
+              value={newTask}
+              onChange={(e) => setNewTask(e.target.value)}
               placeholder="Añadir nueva tarea..."
               className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
             <select
-              // value={category}
-              // onChange={(e) => setCategory(e.target.value as Category)}
+              value={category}
+              onChange={(e) => setCategory(e.target.value as Category)}
               className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
             >
               <option value="personal">Personal</option>
@@ -100,13 +100,13 @@ function App() {
               type="submit"
               className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2"
             >
-              {/* <PlusCircle size={20} /> */}
+               <PlusCircle size={20} />
               Añadir
             </button>
           </div>
         </form>
 
-        {/* <div className="space-y-4">
+        <div className="space-y-4">
           {tasks.map((task) => (
             <div
               key={task.id}
@@ -153,7 +153,7 @@ function App() {
               No hay tareas pendientes. ¡Añade una nueva tarea!
             </p>
           )}
-        </div> */}
+        </div>
       </div>
     </div>
     </>
