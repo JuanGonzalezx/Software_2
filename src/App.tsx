@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import { PlusCircle, Trash2, CheckCircle, Circle } from 'lucide-react';
 type Category = 'personal' | 'work' | 'shopping' | 'other';
@@ -13,56 +11,54 @@ interface Task {
 }
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState<number>(-1)
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [newTask, setNewTask] = useState('');
+  const [newTask, setNewTask] = useState<String>('');
   const [category, setCategory] = useState<Category>('personal');
 
-// add task to tasks
   const addTask = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newTask.trim()) {
+    e.preventDefault();// evita que se recarge la pagina al llenar el formulario
+    if (newTask.trim()) { // trim() elimina los espacios en blanco al inicio y al final de la cadena
       setTasks([
-        ...tasks,
+        ...tasks, // copia las tareas existentes ... es el operador de propagacion esto copiara todos los elementos existentes en la matriz tasks
         {
-          id: Date.now(),
+          id: Date.now(), // genera un id unico revisar esto debido a que lo genera tipo date y nececitamos que sea con mongo
           text: newTask.trim(),
           completed: false,
           category,
         },
+        
       ]);
+      setCount((count) => count + 1);
       setNewTask('');
     }
   };
 
   const toggleTask = (id: number) => {
     setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
+      tasks.map((task) => // devuelve la array de tareas copiada
+        task.id === id ? { ...task, completed: !task.completed } : task // compara una por una de las tareas aver cual es la que se va a modificar y le cambia el estado al opuesto
       )
-    );
+      
+    ); 
+    tasks.map((task) => {
+      if (task.completed == true) {
+        setCount((count) => count - 1);
+      } else if (task.completed == false) {
+        setCount((count) => count + 1);
+      }
+    });
   };
   
-  // delete task from tasks
   const deleteTask = (id: number) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+    setTasks(tasks.filter((task) => task.id !== id)); // busca en todo el array de tasks borra la seleccionada
+    setCount((count) => count - 1);
   };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+          Tareas pendientes {count}
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
