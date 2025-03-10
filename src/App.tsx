@@ -11,9 +11,9 @@ interface Task {
 }
 
 function App() {
-  const [count, setCount] = useState<number>(-1)
+  const [count, setCount] = useState<number>(0)
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [newTask, setNewTask] = useState<String>('');
+  const [newTask, setNewTask] = useState('');
   const [category, setCategory] = useState<Category>('personal');
 
   const addTask = (e: React.FormEvent) => {
@@ -41,13 +41,14 @@ function App() {
       )
       
     ); 
-    tasks.map((task) => {
-      if (task.completed == true) {
-        setCount((count) => count - 1);
-      } else if (task.completed == false) {
+    const task = tasks.find((task) => task.id === id);
+    if (task) {
+      if (task.completed) {
         setCount((count) => count + 1);
+      } else {
+        setCount((count) => count - 1);
       }
-    });
+    }
   };
   
   const deleteTask = (id: number) => {
